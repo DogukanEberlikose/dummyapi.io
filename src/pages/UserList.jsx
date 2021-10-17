@@ -9,7 +9,7 @@ export default function UserList() {
   useEffect(() => {
     let userService = new UserService();
     userService.getUsers().then((result) => setUsers(result.data.data));
-  });
+  },[]);
 
   return (
     <div
@@ -20,7 +20,7 @@ export default function UserList() {
       }}
     >
       {users.map((user) => (
-        <List selection verticalAlign="middle">
+        <List key={user.id} selection verticalAlign="middle">
           <List.Item as={Link} to={`/user/${user.id}`}>
             <Image src={user.picture} />
             <List.Content>

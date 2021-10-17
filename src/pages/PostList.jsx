@@ -8,8 +8,13 @@ export default function PostList() {
 
   useEffect(() => {
     let postService = new PostService();
-    postService.getPosts().then((result) => setPosts(result.data.data));
-  });
+    postService.getPosts().then((result) => {
+      if (result) {
+        const { data } = result;
+        setPosts(data?.data);
+      }
+    });
+  }, []);
 
   return (
     <div
@@ -19,8 +24,8 @@ export default function PostList() {
         gridGap: "15px",
       }}
     >
-      {posts.map((post) => (
-        <Card key={post.id}>
+      {posts.map((post, i) => (
+        <Card key={i}>
           <Image src={post.image} wrapped ui={false} />
           <Card.Content>
             <Card.Header>
@@ -41,7 +46,11 @@ export default function PostList() {
             </Card.Header>
             <Card.Meta>
               {post &&
-                post.tags.map((tag) => <Label color="grey">{tag}</Label>)}
+                post.tags.map((tag, i) => (
+                  <Label key={i} color="grey">
+                    {tag}
+                  </Label>
+                ))}
             </Card.Meta>
             <Card.Description>{post.text}</Card.Description>
           </Card.Content>
